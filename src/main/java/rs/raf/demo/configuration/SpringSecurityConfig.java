@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,17 +12,16 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import rs.raf.demo.filters.JwtFilter;
-import rs.raf.demo.services.UserService;
+import rs.raf.demo.services.User2Service;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final User2Service userService;
     private final JwtFilter jwtFilter;
 
     @Autowired
-    public SpringSecurityConfig(UserService userService, JwtFilter jwtFilter) {
+    public SpringSecurityConfig(User2Service userService, JwtFilter jwtFilter) {
         this.userService = userService;
         this.jwtFilter = jwtFilter;
     }

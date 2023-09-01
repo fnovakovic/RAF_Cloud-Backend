@@ -1,35 +1,31 @@
 package rs.raf.demo.bootstrap;
 
+import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
+
 import rs.raf.demo.model.*;
 import rs.raf.demo.repositories.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
 
-    private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
-    private final CourseMaterialRepository courseMaterialRepository;
-    private final TeacherRepository teacherRepository;
-    private final UserRepository userRepository;
 
+    private final User2Repository user2Repository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public BootstrapData(StudentRepository studentRepository, CourseRepository courseRepository, CourseMaterialRepository courseMaterialRepository, TeacherRepository teacherRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
-        this.courseMaterialRepository = courseMaterialRepository;
-        this.teacherRepository = teacherRepository;
-        this.userRepository = userRepository;
+    public BootstrapData( User2Repository user2Repository, PasswordEncoder passwordEncoder) {
+        this.user2Repository = user2Repository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -38,61 +34,43 @@ public class BootstrapData implements CommandLineRunner {
 
         System.out.println("Loading Data...");
 
-        String[] FIRST_NAME_LIST = {"John-James", "Justine", "Ahsan", "Leja", "Jad", "Vernon", "Cara", "Eddison", "Eira", "Emily"};
-        String[] LAST_NAME_LIST = {"Booker", "Summers", "Reyes", "Rahman", "Crane", "Cairns", "Hebert", "Bradshaw", "Shannon", "Phillips"};
-        String[] COURSE_LIST = {"Data Science BSc", "Data Science MSci", "Diagnostic Radiography and Imaging (Degree Apprenticeship) BSc (Hons)", "Digital and Technology Solutions degree apprenticeship", "Drama BA", "Drama and Film & Television Studies BA"};
+        User2 user2 = new User2();
+        user2.setFirst_name("user1FirstName");
+        user2.setLast_name("user1LastName");
+        user2.setEmail("user1@gmail.com");
+        user2.setCreateUser("1");
+        user2.setReadUser("1");
+        user2.setUpdateUser("1");
+        user2.setDeleteUser("1");
+        user2.setCreateMachine("1");
+        user2.setDestroyMachine("1");
+        user2.setRestartMachine("1");
+        user2.setSearchMachine("1");
+        user2.setStartMachine("1");
+        user2.setStopMachine("1");
 
-        Random random = new Random();
+//        user2.setPassword(this.passwordEncoder.encode("user1"));
+        user2.setPassword(Base64.getEncoder().encodeToString("user1".getBytes(StandardCharsets.UTF_8)));
+        user2Repository.save(user2);
 
-        List<Teacher> teachers = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Teacher teacher = new Teacher();
-            teacher.setFirstName(FIRST_NAME_LIST[random.nextInt(FIRST_NAME_LIST.length)]);
-            teacher.setLastName(LAST_NAME_LIST[random.nextInt(LAST_NAME_LIST.length)]);
-            teachers.add(teacher);
-        }
-        System.out.println(teacherRepository.saveAll(teachers));
 
-        List<Student> students = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-
-            Student student = new Student();
-            student.setFirstName(FIRST_NAME_LIST[random.nextInt(FIRST_NAME_LIST.length)]);
-            student.setLastName(LAST_NAME_LIST[random.nextInt(LAST_NAME_LIST.length)]);
-
-            Address address = new Address();
-            address.setStreet("Knez Mihajlova");
-            address.setNumber(String.valueOf(i + 1));
-            address.setCity("Belgrade");
-            student.setAddress(address);
-
-            students.add(student);
-            System.out.println(studentRepository.save(student));
-        }
-
-        for (int i = 0; i < COURSE_LIST.length; i++) {
-
-            Course course = new Course();
-            course.setTitle(COURSE_LIST[i]);
-
-//            course.setTeacher(teacherRepository.findById((long) (random.nextInt(teachers.size()) + 1)).get());
-            course.setTeacher(teachers.get(random.nextInt(teachers.size())));
-            for (int j = 0; j < 5; j++) {
-                course.getStudents().add(studentRepository.findById((long) random.nextInt(students.size()) + 1).get());
-            }
-
-            CourseMaterial courseMaterial = new CourseMaterial();
-            courseMaterial.setUrl("localhost:8080/courses/" + COURSE_LIST[i].replaceAll(" ", "-"));
-            courseMaterial.setCourse(course);
-
-            course.setMaterial(courseMaterial);
-            courseRepository.save(course);
-        }
-
-        User user1 = new User();
-        user1.setUsername("user1");
-        user1.setPassword(this.passwordEncoder.encode("user1"));
-        this.userRepository.save(user1);
+        User2 user3 = new User2();
+        user3.setFirst_name("fica");
+        user3.setLast_name("novakovic");
+        user3.setEmail("fica@gmail.com");
+        user3.setCreateUser("1");
+        user3.setReadUser("1");
+        user3.setUpdateUser("0");
+        user3.setDeleteUser("0");
+        user3.setCreateMachine("1");
+        user3.setDestroyMachine("1");
+        user3.setRestartMachine("1");
+        user3.setSearchMachine("1");
+        user3.setStartMachine("1");
+        user3.setStopMachine("1");
+       // user3.setPassword(this.passwordEncoder.encode("user1"));
+        user3.setPassword(Base64.getEncoder().encodeToString("user1".getBytes(StandardCharsets.UTF_8)));
+        user2Repository.save(user3);
 
 
 

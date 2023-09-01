@@ -1,17 +1,20 @@
 package rs.raf.demo.controllers;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import rs.raf.demo.requests.LoginRequest;
 import rs.raf.demo.responses.LoginResponse;
-import rs.raf.demo.services.UserService;
+import rs.raf.demo.services.User2Service;
 import rs.raf.demo.utils.JwtUtil;
-//import rs.edu.raf.spring_project.model.AuthReq;
-//import rs.edu.raf.spring_project.model.AuthRes;
+
+import java.nio.charset.StandardCharsets;
+
+import java.util.Base64;
+
+
 
 @RestController
 @CrossOrigin
@@ -19,27 +22,29 @@ import rs.raf.demo.utils.JwtUtil;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
+
+    private final User2Service user2Service;
     private final JwtUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil) {
+
+    public AuthController(AuthenticationManager authenticationManager, User2Service user2Service, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
+
+        this.user2Service = user2Service;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        } catch (Exception   e){
+            System.out.println("EMAIL JE " + loginRequest.getEmail() + ", PASSWORD JE " + loginRequest.getPassword());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), Base64.getEncoder().encodeToString(loginRequest.getPassword().getBytes(StandardCharsets.UTF_8))));
+        } catch (Exception   e){ //Hashing.sha256().hashString(loginRequest.getPassword(), StandardCharsets.UTF_8).toString()
             e.printStackTrace();
             return ResponseEntity.status(401).build();
         }
 
-        UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
-
-        return ResponseEntity.ok(new LoginResponse(jwtUtil.generateToken(userDetails)));
+        return ResponseEntity.ok(new LoginResponse(jwtUtil.generateToken(loginRequest.getEmail())));
     }
 
 }
