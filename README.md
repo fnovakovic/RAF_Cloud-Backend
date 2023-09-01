@@ -1,5 +1,5 @@
 # RAF_Cloud-Backend
-Advance Web Programming - Final project (January)
+Advance Web Programming - Final project
 
 Cilj rada je implementacija WEB aplikacije koja će predstavljati imitaciju našeg cloud provajdera. 
 Aplikacija treba da stvori utisak da je korisnik u stanju da kreira i kontroliše stanje fizičke mašine i vezanih resursa.
