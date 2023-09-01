@@ -56,9 +56,9 @@ Operacije START, STOP i RESTART se mogu zakazati - korisnik može da odredi datu
 Frontend
 Na frontendu, pored grafičkog interfejsa za upravljanjem korisnicima, potrebno je implementirati dve nove stranice: 
 
-1.	Stranicu za pretragu mašina
-2.	Stranicu za kreiranje mašina
-3.	Stranicu sa istorijom grešaka
+  1.	Stranicu za pretragu mašina
+  2.	Stranicu za kreiranje mašina
+  3.	Stranicu sa istorijom grešaka
 1. Pretraga mašina:
 Implementirati da se upotrebom SEARCH-a prikažu sve mašine bez prosleđenih parametara kada se stranica učita. Pored toga, implemenitari formu iznad tabele koja sadrži potrebna polja da pokrije sve funkcionalnosti za pretragu koje nudi Backend. Filteri će se primeniti submitom te forme.
 2. Kreiranje mašine
